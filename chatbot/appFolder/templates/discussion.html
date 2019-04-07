@@ -1,0 +1,140 @@
+{% extends "layout.html" %}
+{% block content %}
+<body>
+     <header class="site-header">
+      <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+        <div class="container">
+          <a class="navbar-brand mr-4" href="/home">Study Genie</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarToggle">
+            <div class="navbar-nav mr-auto">
+              <a class="nav-item nav-link" href="/">Home</a>
+
+              
+                <a class="nav-item nav-link" href="/profile/7">Profile</a>
+              
+            </div>
+            <!-- Navbar Right Side -->
+            <div class="navbar-nav">
+                
+                    <a class="nav-item nav-link" href="/logout ">Logout</a>
+                
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main role="main" class="container">
+      <div class="row">
+          <div class="col-md-12">
+          
+            
+          
+          
+    <div class = "content-section">
+
+        <form method="POST" action="javascript:postFeed();">
+            <input id="csrf_token" name="csrf_token" type="hidden" value="IjYwZWFjY2ZmYWUxZDQxYjk5NjU0YWNhNmRhM2I4NDg2MTBjMGZhMjQi.W_IoKQ.r9CRE8iDNd4d51I5KfdWmAtHUu4">
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Discussion Forum</legend>
+                <div class="form-group">
+                    <label class="form-control-label" for="content"> join the discussion...</label>
+                    
+                        <textarea class="form-control form-control-lg" id="content" name="content" required style="height: 100px;"></textarea>
+                    
+
+                </div>
+
+            </fieldset>
+
+            <div class="form-group">
+                <input class="btn btn-outline-info" id="submit" name="submit" type="submit" value="Create"">
+            </div>
+
+            <div id="discussionFeeds">
+              
+              <article class="media content-section">
+          <img class="rounded-circle article-img" src="static/profile_pics/default.png">
+          <div class="media-body">
+            <div class="article-metadata">
+              <a class="mr-2" href="#">{{current_user.username}}</a>
+              <small class="text-muted">2018-11-19 05:32:44</small>
+            </div>
+            <p class="article-content">My 50 year old ex-husband wants to marry a 14 year old girl. How do I explain to him that this is wrong?</p>
+          </div>
+        </article>
+            </div>
+
+        </form>
+    </div>
+
+
+
+        </div>
+
+        </div>
+      </div>
+    </main>
+</body>
+
+<script type="text/javascript">
+  
+  function check(){
+    alert('testing');
+  }
+
+function postFeed(){
+  var content = document.getElementById("content").value;
+  url ="/addFeed?"+"feed="+content;
+  sendRequestWithCallback(url, null, true, callbackfn);
+  document.getElementById("content").value="";
+}
+
+  function callbackfn(response){
+    var posts = document.getElementById("discussionFeeds").innerHTML;
+    posts = response + posts;
+    document.getElementById("discussionFeeds").innerHTML=posts;
+}
+
+function sendRequestWithCallback(action, params, async, callback) {
+    var objHTTP = xhr();
+    objHTTP.open('GET', action, async);
+    objHTTP.setRequestHeader('Content-Type','application/x-www-form-urlencoded;charset=UTF-8');
+    if(async){
+  objHTTP.onreadystatechange=function() {
+      if(objHTTP.readyState==4) {
+    if(callback) {
+        callback(objHTTP.responseText);
+    }
+      }
+  };
+    }
+    objHTTP.send(params);
+    if(!async) {
+  if(callback) {
+            callback(objHTTP.responseText);
+        }
+    }
+} 
+function xhr() {
+    var xmlhttp;
+    if (window.XMLHttpRequest) {
+  xmlhttp=new XMLHttpRequest();
+    }
+    else if(window.ActiveXObject) {
+  try {
+      xmlhttp=new ActiveXObject("Msxml2.XMLHTTP");
+  }
+  catch(e) {
+      xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+    }
+    return xmlhttp;
+}
+
+
+</script>
+
+{% endblock %}
